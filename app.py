@@ -14,7 +14,9 @@ posts = {
 def get_posts():
     allposts = posts
     for i in allposts:
-        response = requests.get(f'http://localhost:5000/user/{allposts[i]["user_id"]}')
+        response = requests.get(f'http://host.docker.internal:5000/user/{allposts[i]["user_id"]}')
+        # response = requests.get(f'http://localhost:5000/user/{allposts[i]["user_id"]}')
+        
         if response.status_code ==200:
             allposts[i]['user'] = response.json()
     return jsonify(allposts)
@@ -29,7 +31,9 @@ def get_post(id):
         post_info = posts.get(id, {}) 
     # Get user info from User Service
         if post_info:
-            response = requests.get(f'http://localhost:5000/user/{post_info["user_id"]}')
+            # response = requests.get(f'http://localhost:5000/user/{post_info["user_id"]}')
+            response = requests.get(f'http://host.docker.internal:5000/user/{post_info["user_id"]}')
+            
             if response.status_code == 200:
                 post_info['user'] = response.json()
         return jsonify(post_info)
@@ -80,5 +84,5 @@ def delete_post(id):
 
 
 if __name__ == '__main__':
-    app.debug = True
+    app.debug=True
     app.run(port=5001)
